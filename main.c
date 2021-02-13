@@ -33,6 +33,7 @@ void game();
 	
 	void showJuara();
 	void timeOut();
+	int randomGrid();
 void help();
 void about();
 
@@ -57,10 +58,6 @@ typedef struct {
 
 typedef struct {
 	bool active;
-	char nama[100];
-	int score;
-	bool status;
-	int level;
 } Komputer;
 
 
@@ -162,7 +159,6 @@ int setLevel(){
 		scanf("%d",&pilihan);
 		if(pilihan != 4){
 			bot.active = true;
-			bot.level = pilihan;
 		}
 	}while(pilihan > 4 || pilihan < 0);
 	
@@ -192,6 +188,7 @@ void setNama(int player){
 		scanf("%s",&pemain[i].nama);
 		pemain[i].index=i;
 	}
+	pemain[1].index=1;
 }
 
 void setRonde(){
@@ -250,8 +247,6 @@ void grid1(){
 			else giliran--;
 		if(cekLine(giliran,1) == true)ronde++;
 	}while(ronde < papan.ronde);
-	if(switchGiliran(giliran) == true) giliran++;
-		else giliran--;
 	showJuara(giliran);
 }
 
@@ -363,17 +358,19 @@ void grid3(){
 			else giliran--;
 		if(cekLine(giliran,3) == true)ronde++;
 	}while(ronde < papan.ronde);
-	if(switchGiliran(giliran) == true) giliran++;
-		else giliran--;
-	showJuara(giliran);
+	showJuara();
 }
 
 bool fillGrid(giliran,grid){
 	int pilih,noGrid=1;
 	bool errorPilih=false;
 	
-	printf("Masukan nomor grid yang akan diisi : ");
-	scanf("%d",&pilih);
+	if(bot.active == true && pemain[giliran].index == 1){
+		pilih = randomGrid(grid);
+	}else{
+		printf("Masukan nomor grid yang akan diisi : ");
+		scanf("%d",&pilih);
+	}
 
 	switch(grid){
 		case 1:
@@ -654,14 +651,13 @@ void viewScore(){
 	if(bot.active == false){
 		printf("Score %s : %d     Score %s : %d\n\n",pemain[0].nama,pemain[0].score,pemain[1].nama,pemain[1].score);
 	}else{
-		printf("Score %s : %d     Score Komputer : %d\n\n",pemain[0].nama,pemain[0].score,bot.score);		
+		printf("Score %s : %d     Score Komputer : %d\n\n",pemain[0].nama,pemain[0].score,pemain[1].score);		
 	}
 }
 
 void resetScore(){
 	pemain[0].score = 0;
-	pemain[0].score = 0;
-	bot.score = 0;	
+	pemain[1].score = 0;
 }
 
 void viewGiliran(int giliran){
@@ -678,42 +674,67 @@ bool switchGiliran(int giliran){
 	}
 }
 
-void showJuara(int giliran){
+void showJuara(){
 	char pilihan='N';
 
 	do{
 		system("cls");
 		printf("||==========   Juara   ==========||\n");
-		printf("Juaranya adalah : %s\n",pemain[giliran].nama);
-		if(giliran  == 0) printf("Score           : %d - %d\n",pemain[0].score,pemain[1].score);
-			else printf("Score           : %d - %d\n",pemain[0].score,pemain[1].score);
+		
+		if(bot.active == true && (pemain[1].score > pemain[0].score)){
+			printf("Juaranya adalah : Komputer\n");
+			printf("Score           : %d - %d\n",pemain[1].score,pemain[0].score);
+		}else if(pemain[1].score > pemain[0].score){
+			printf("Juaranya adalah : %s\n",pemain[1].nama);
+			printf("Score           : %d - %d\n",pemain[1].score,pemain[0].score);
+		}else{
+			printf("Juaranya adalah : %s\n",pemain[0].nama);
+			printf("Score           : %d - %d\n",pemain[0].score,pemain[1].score);
+		}
 		printf("||================================||\n\n\n");
 		printf("Masukan Y untuk kembali : ");
 		scanf("%c",&pilihan);
 	}while(tolower(pilihan)!= 'y');
 }
 
+int randomGrid(int sampai){
+	switch(sampai){
+		case 1:
+			return rand() % 9 + 1;
+			break;
+		
+		case 2:
+			return rand() % 25 + 1;			
+			break;
+			
+		case 3:
+			return rand() % 49 + 1;
+			break;
+			
+	}
+}
+
 void help(){
 	char buff[255];
 	char pilihan='N';
 
-  	FILE *how;
-	// membuka file
-	
-	if ((how = fopen("howtolpay.txt","r")) == NULL){
-    	printf("Error: File tidak ada!");
-	    exit(1);
-	}
-	
-	fgets(buff, 255, how);
-	do{
-		system("cls");
-		printf("%s", buff);
-		printf("Masukan Y untuk kembali : ");
-		scanf("%c",&pilihan);
-	}while(tolower(pilihan)!= 'y');
-	
-	fclose(how);
+//  	FILE *how;
+//	// membuka file
+//	
+//	if ((how = fopen("howtolpay.txt","r")) == NULL){
+//    	printf("Error: File tidak ada!");
+//	    exit(1);
+//	}
+//	
+//	fgets(buff, 255, how);
+//	do{
+//		system("cls");
+//		printf("%s", buff);
+//		printf("Masukan Y untuk kembali : ");
+//		scanf("%c",&pilihan);
+//	}while(tolower(pilihan)!= 'y');
+//	
+//	fclose(how);
 }
 
 void about(){
