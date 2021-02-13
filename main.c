@@ -170,8 +170,6 @@ int setLevel(){
 }
 
 void setGrid(){
-	int pilihan;
-
 	do{
 		system("cls");
 		printf("||===========    Grid    ===========||\n");
@@ -181,7 +179,7 @@ void setGrid(){
 		printf("||==================================||\n\n\n");
 		printf("Masukan Grid : ");
 		scanf("%d",&papan.pola);
-	}while(pilihan > 3 || pilihan < 0);
+	}while(papan.pola > 3 || papan.pola < 0);
 }
 
 void setNama(int player){
@@ -258,31 +256,53 @@ void grid1(){
 }
 
 void grid2(){
-	int pilihan;
-	printf("=======================   PAPAN PERMAINAN   =======================\n\n");
-	printf("||===========||===========||===========||===========||===========||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||     1     ||     2     ||     3     ||     4     ||     5     ||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||===========||===========||===========||===========||===========||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||     6     ||     7     ||     8     ||     9     ||     10    ||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||===========||===========||===========||===========||===========||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||     11    ||     12    ||     13    ||     14    ||     15    ||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||===========||===========||===========||===========||===========||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||     16    ||     17    ||     18    ||     19    ||     20    ||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||===========||===========||===========||===========||===========||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||     21    ||     22    ||     23    ||     24    ||     25    ||\n");
-	printf("||           ||           ||           ||           ||           ||\n");
-	printf("||===========||===========||===========||===========||===========||\n\n\n");
-	printf("Masukan nomor grid yang akan diisi : ");
-	scanf("%d",&pilihan);
+	int giliran=0,ronde=0;
+	bool errorPilih=false;
+
+	resetGrid(2);
+	do{
+		do{
+			system("cls");
+			printf("==========   PAPAN PERMAINAN   ==========\n");
+			viewScore();
+			printf("Ronde   : %d\n",ronde+1);
+			viewGiliran(giliran);
+			
+			printf("=======================   PAPAN PERMAINAN   =======================\n\n");
+			printf("||===========||===========||===========||===========||===========||\n");
+			printf("||1          ||2          ||3          ||4          ||5          ||\n");
+			printf("||     %c     ||     %c     ||     %c     ||     %c     ||     %c     ||\n"
+			,papan.ordo[0][0],papan.ordo[0][1],papan.ordo[0][2],papan.ordo[0][3],papan.ordo[0][4]);
+			printf("||           ||           ||           ||           ||           ||\n");
+			printf("||===========||===========||===========||===========||===========||\n");
+			printf("||6          ||7          ||8          ||9          ||10         ||\n");
+			printf("||     %c     ||     %c     ||     %c     ||     %c     ||     %c     ||\n"
+			,papan.ordo[1][0],papan.ordo[1][1],papan.ordo[1][2],papan.ordo[1][3],papan.ordo[1][4]);
+			printf("||           ||           ||           ||           ||           ||\n");
+			printf("||===========||===========||===========||===========||===========||\n");
+			printf("||11         ||12         ||13         ||14         ||15         ||\n");
+			printf("||     %c     ||     %c     ||     %c     ||     %c     ||     %c     ||\n"
+			,papan.ordo[2][0],papan.ordo[2][1],papan.ordo[2][2],papan.ordo[2][3],papan.ordo[2][4]);
+			printf("||           ||           ||           ||           ||           ||\n");
+			printf("||===========||===========||===========||===========||===========||\n");
+			printf("||16         ||17         ||18         ||19         ||20         ||\n");
+			printf("||     %c     ||     %c     ||     %c     ||     %c     ||     %c     ||\n"
+			,papan.ordo[3][0],papan.ordo[3][1],papan.ordo[3][2],papan.ordo[3][3],papan.ordo[3][4]);
+			printf("||           ||           ||           ||           ||           ||\n");
+			printf("||===========||===========||===========||===========||===========||\n");
+			printf("||21         ||22         ||23         ||24         ||25         ||\n");
+			printf("||     %c     ||     %c     ||     %c     ||     %c     ||     %c     ||\n"
+			,papan.ordo[4][0],papan.ordo[4][1],papan.ordo[4][2],papan.ordo[4][3],papan.ordo[4][4]);
+			printf("||           ||           ||           ||           ||           ||\n");
+			printf("||===========||===========||===========||===========||===========||\n\n\n");
+			if(errorPilih==true) printf("Nomor tidak ada atau sudah diisi!\n");
+			errorPilih = fillGrid(giliran,2);
+		}while(errorPilih == true);
+		if(cekStatusGrid(2) == false)resetGrid(2); 
+		if(switchGiliran(giliran) == true) giliran++;
+			else giliran--;
+		if(cekLine(giliran,2) == true)ronde++;
+	}while(ronde < papan.ronde);
 }
 
 void grid3(){
@@ -343,6 +363,9 @@ void grid3(){
 			else giliran--;
 		if(cekLine(giliran,3) == true)ronde++;
 	}while(ronde < papan.ronde);
+	if(switchGiliran(giliran) == true) giliran++;
+		else giliran--;
+	showJuara(giliran);
 }
 
 bool fillGrid(giliran,grid){
@@ -361,6 +384,29 @@ bool fillGrid(giliran,grid){
 			}
 			for(i=0;i<3;i++){
 				for(j=0;j<3;j++){			
+					if(pilih == papan.ordoStatus[i][j]){
+						errorPilih = true;
+					}else if(pilih == papan.ordoDone[i][j] && pemain[giliran].index == 0){
+						papan.ordo[i][j] = 'X';
+						papan.ordoDone[i][j] = 0;
+						papan.ordoStatus[i][j] = pilih;
+					}else if(pilih == papan.ordoDone[i][j] && pemain[giliran].index == 1){
+						papan.ordo[i][j] = 'O';
+						papan.ordoDone[i][j] = 100;
+						papan.ordoStatus[i][j] = pilih;
+					}
+				}
+			}
+			break;
+			
+		case 2:
+			if(pilih > 25 || pilih < 0){
+				errorPilih = true;
+			}else{
+				errorPilih = false;
+			}
+			for(i=0;i<5;i++){
+				for(j=0;j<5;j++){			
 					if(pilih == papan.ordoStatus[i][j]){
 						errorPilih = true;
 					}else if(pilih == papan.ordoDone[i][j] && pemain[giliran].index == 0){
@@ -420,11 +466,23 @@ void resetGrid(grid){
 			}
 			break;
 			
+		case 2:
+			for(i=0;i<5;i++){
+				for(j=0;j<5;j++){    
+					papan.ordo[i][j] = '-';
+					papan.ordoDone[i][j] = noGrid;
+					papan.ordoStatus[i][j] = 0;
+					noGrid++;
+				}
+			}
+			break;
+			
 		case 3:
 			for(i=0;i<7;i++){
 				for(j=0;j<7;j++){    
 					papan.ordo[i][j] = '-';
 					papan.ordoDone[i][j] = noGrid;
+					papan.ordoStatus[i][j] = 0;
 					noGrid++;
 				}
 			}
@@ -452,6 +510,20 @@ bool cekStatusGrid(grid){
 				else return true;
 			break;
 			
+		case 2:
+			for(i=0;i<5;i++){
+				for(j=0;j<5;j++){
+					
+					if(papan.ordoStatus[i][j] == noGrid) hasil++;
+					noGrid++;
+					
+				}
+			}
+			
+			if(hasil == 25) return false;
+				else return true;
+			break;
+			
 		case 3:
 			for(i=0;i<7;i++){
 				for(j=0;j<7;j++){
@@ -470,6 +542,7 @@ bool cekStatusGrid(grid){
 
 bool cekLine(giliran,grid){
 	bool ronde=false;
+	int putaran,miringkanan;
 	
 	switch(grid){
 		case 1:
@@ -488,9 +561,9 @@ bool cekLine(giliran,grid){
 			}
 			break;
 			
-		case 3:
-			for(i=0;i<7;i++){
-				for(j=0;j<7;j++){					
+		case 2:
+			for(i=0;i<5;i++){
+				for(j=0;j<5;j++){					
 					if((papan.ordoDone[i][0] == papan.ordoDone[i][1] && papan.ordoDone[i][1] == papan.ordoDone[i][2]) ||
 					(papan.ordoDone[0][j] == papan.ordoDone[1][j] && papan.ordoDone[1][j] == papan.ordoDone[2][j]) || 
 					(papan.ordoDone[0][0] == papan.ordoDone[1][1] && papan.ordoDone[1][1] == papan.ordoDone[2][2]) ||
@@ -500,6 +573,75 @@ bool cekLine(giliran,grid){
 							else pemain[0].score++;
 						resetGrid(1);
 					}
+				}
+			}
+			break;
+			
+		case 3:
+			for(i=0;i<7;i++){
+				for(j=0;j<7;j++){		
+				
+					for(putaran=0;putaran<3;putaran++){
+						if(
+						//horizontal
+						(papan.ordoDone[i][0+putaran] == papan.ordoDone[i][1+putaran] && papan.ordoDone[i][1+putaran] == papan.ordoDone[i][2+putaran] &&
+				 		papan.ordoDone[i][2+putaran] == papan.ordoDone[i][3+putaran] && papan.ordoDone[i][3+putaran] == papan.ordoDone[i][4+putaran])||
+				 		
+				 		//vertikal
+						(papan.ordoDone[0+putaran][j] == papan.ordoDone[1+putaran][j] && papan.ordoDone[1+putaran][j] == papan.ordoDone[2+putaran][j] &&
+						papan.ordoDone[2+putaran][j] == papan.ordoDone[3+putaran][j] && papan.ordoDone[3+putaran][j] == papan.ordoDone[4+putaran][j])|| 
+						
+						//miring
+						(papan.ordoDone[0+putaran][0+putaran] == papan.ordoDone[1+putaran][1+putaran] && papan.ordoDone[1+putaran][1+putaran] == papan.ordoDone[2+putaran][2+putaran] &&
+						papan.ordoDone[2+putaran][2+putaran] == papan.ordoDone[3+putaran][3+putaran] && papan.ordoDone[3+putaran][3+putaran] == papan.ordoDone[4+putaran][4+putaran]) ||
+						
+						(papan.ordoDone[0+putaran][6-putaran] == papan.ordoDone[1+putaran][5-putaran] && papan.ordoDone[1+putaran][5-putaran] == papan.ordoDone[2+putaran][4-putaran] &&
+						papan.ordoDone[2+putaran][4-putaran] == papan.ordoDone[3+putaran][3-putaran] && papan.ordoDone[3+putaran][3-putaran] == papan.ordoDone[4+putaran][2-putaran])
+						){	ronde = true;
+							if(pemain[giliran].index == 0) pemain[1].score++;
+								else pemain[0].score++;
+							resetGrid(3);
+						}			
+					}
+					
+					for(putaran=0;putaran<2;putaran++){
+						if(
+						//miring 2 kali
+						(papan.ordoDone[0+putaran][1+putaran] == papan.ordoDone[1+putaran][2+putaran] && papan.ordoDone[1+putaran][2+putaran] == papan.ordoDone[2+putaran][3+putaran] &&
+						papan.ordoDone[2+putaran][3+putaran] == papan.ordoDone[3+putaran][4+putaran] && papan.ordoDone[3+putaran][4+putaran] == papan.ordoDone[4+putaran][5+putaran]) ||
+						
+						(papan.ordoDone[1+putaran][0+putaran] == papan.ordoDone[2+putaran][1+putaran] && papan.ordoDone[2+putaran][1+putaran] == papan.ordoDone[3+putaran][2+putaran] &&
+						papan.ordoDone[3+putaran][2+putaran] == papan.ordoDone[4+putaran][3+putaran] && papan.ordoDone[4+putaran][3+putaran] == papan.ordoDone[5+putaran][4+putaran]) ||
+						
+						(papan.ordoDone[0+putaran][5-putaran] == papan.ordoDone[1+putaran][4-putaran] && papan.ordoDone[1+putaran][4-putaran] == papan.ordoDone[2+putaran][3-putaran] &&
+						papan.ordoDone[2+putaran][3-putaran] == papan.ordoDone[3+putaran][2-putaran] && papan.ordoDone[3+putaran][2-putaran] == papan.ordoDone[4+putaran][1-putaran]) ||
+						
+						(papan.ordoDone[1+putaran][6-putaran] == papan.ordoDone[2+putaran][5-putaran] && papan.ordoDone[2+putaran][5-putaran] == papan.ordoDone[3+putaran][4-putaran] &&
+						papan.ordoDone[3+putaran][4-putaran] == papan.ordoDone[4+putaran][3-putaran] && papan.ordoDone[4+putaran][3-putaran] == papan.ordoDone[5+putaran][2-putaran])
+						){
+						ronde = true;
+							if(pemain[giliran].index == 0) pemain[1].score++;
+								else pemain[0].score++;
+							resetGrid(3);
+						}
+					}
+					
+					for(putaran=0;putaran<=2;putaran+=2){
+						if(
+						//miring 1 kali
+						(papan.ordoDone[0+putaran][2-putaran] == papan.ordoDone[1+putaran][3-putaran] && papan.ordoDone[1+putaran][3-putaran] == papan.ordoDone[2+putaran][4-putaran] &&
+						papan.ordoDone[2+putaran][4-putaran] == papan.ordoDone[3+putaran][5-putaran] && papan.ordoDone[3+putaran][5-putaran] == papan.ordoDone[4+putaran][6-putaran]) ||
+						
+						(papan.ordoDone[0+putaran][4+putaran] == papan.ordoDone[1+putaran][3+putaran] && papan.ordoDone[1+putaran][3+putaran] == papan.ordoDone[2+putaran][2+putaran] &&
+						papan.ordoDone[2+putaran][2+putaran] == papan.ordoDone[3+putaran][1+putaran] && papan.ordoDone[3+putaran][1+putaran] == papan.ordoDone[4+putaran][0+putaran])
+						){
+						ronde = true;
+							if(pemain[giliran].index == 0) pemain[1].score++;
+								else pemain[0].score++;
+							resetGrid(3);
+						}
+					}
+					
 				}
 			}
 			break;		
