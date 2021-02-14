@@ -9,6 +9,7 @@ Nama /Author 	: Aqil Rahman & Nuno Alwi Azimah
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+#include<windows.h>
 
 //modul
 void game();
@@ -34,8 +35,12 @@ void game();
 	void showJuara();
 	void timeOut();
 	int randomGrid();
+	int StartTime();
+	int EndTime();
+	
 void help();
 void about();
+
 
 
 //struct 
@@ -65,6 +70,7 @@ typedef struct {
 Player pemain[2];
 Grid papan;
 Komputer bot;
+int pilihan;
 
 int i,j;
 
@@ -144,7 +150,7 @@ void game(){
 }
 
 int setLevel(){
-	int pilihan;
+
 	bot.active = false;
 	
 	do{
@@ -240,7 +246,8 @@ void grid1(){
 			printf("||           ||           ||           ||\n");
 			printf("||===========||===========||===========||\n\n\n");
 			if(errorPilih==true) printf("Nomor tidak ada atau sudah diisi!\n");
-			errorPilih = fillGrid(giliran,1);
+			errorPilih = fillGrid(giliran,1,pilihan);
+
 		}while(errorPilih == true);
 		if(cekStatusGrid(1) == false)resetGrid(1); 
 		if(switchGiliran(giliran) == true) giliran++;
@@ -291,7 +298,7 @@ void grid2(){
 			printf("||           ||           ||           ||           ||           ||\n");
 			printf("||===========||===========||===========||===========||===========||\n\n\n");
 			if(errorPilih==true) printf("Nomor tidak ada atau sudah diisi!\n");
-			errorPilih = fillGrid(giliran,2);
+			errorPilih = fillGrid(giliran,2,pilihan);
 		}while(errorPilih == true);
 		if(cekStatusGrid(2) == false)resetGrid(2); 
 		if(switchGiliran(giliran) == true) giliran++;
@@ -351,7 +358,8 @@ void grid3(){
 			printf("||           ||           ||           ||           ||           ||           ||           ||\n");
 			printf("||===========||===========||===========||===========||===========||===========||===========||\n\n\n");
 			if(errorPilih==true) printf("Nomor tidak ada atau sudah diisi!\n");
-			errorPilih = fillGrid(giliran,3);
+			errorPilih = fillGrid(giliran,3,pilihan);
+			
 		}while(errorPilih == true);
 		if(cekStatusGrid(3) == false)resetGrid(3); 
 		if(switchGiliran(giliran) == true) giliran++;
@@ -361,15 +369,41 @@ void grid3(){
 	showJuara();
 }
 
-bool fillGrid(giliran,grid){
-	int pilih,noGrid=1;
+bool fillGrid(giliran,grid,pilihan){
+	int batasWaktuInput;
+	int pilih,noGrid=1,t;
 	bool errorPilih=false;
+	double waktuInput = 0;
+	
+	if(pilihan == 1){
+		batasWaktuInput = 10;
+	} else if(pilihan == 2){
+		batasWaktuInput = 5;
+	} else if(pilihan == 3){
+		batasWaktuInput = 3;
+	} else {
+		batasWaktuInput = 10;
+	}
+	
 	
 	if(bot.active == true && pemain[giliran].index == 1){
 		pilih = randomGrid(grid);
 	}else{
+		
+		t = StartTime();
+		
 		printf("Masukan nomor grid yang akan diisi : ");
 		scanf("%d",&pilih);
+		
+		t = EndTime() - t;
+		
+		waktuInput = ((double) t)/CLOCKS_PER_SEC;
+		
+		if(waktuInput>batasWaktuInput){
+			printf("Anda Melebihi Batas Waktu, Giliran di Ganti");
+			Sleep(3000);
+			return errorPilih;
+		}
 	}
 
 	switch(grid){
@@ -712,6 +746,20 @@ int randomGrid(int sampai){
 			break;
 			
 	}
+}
+
+int StartTime() {
+    clock_t startInput;
+    startInput = clock();
+
+    return startInput;
+}
+
+int EndTime() {
+    clock_t endInput;
+    endInput = clock();
+
+    return endInput;
 }
 
 void help(){
