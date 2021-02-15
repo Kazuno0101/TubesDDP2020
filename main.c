@@ -618,7 +618,7 @@ bool cekLine(giliran,grid){
 						){	ronde = true;
 							if(pemain[giliran].index == 0) pemain[1].score++;
 								else pemain[0].score++;
-							resetGrid(3);
+							resetGrid(2);
 						}			
 					}
 					
@@ -635,7 +635,7 @@ bool cekLine(giliran,grid){
 						ronde = true;
 							if(pemain[giliran].index == 0) pemain[1].score++;
 								else pemain[0].score++;
-							resetGrid(3);
+							resetGrid(2);
 						}
 					}
 
