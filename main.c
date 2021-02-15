@@ -403,7 +403,8 @@ bool fillGrid(giliran,grid,pilihan){
 		waktuInput = ((double) t)/CLOCKS_PER_SEC;
 		
 		if(waktuInput>batasWaktuInput){
-			printf("Anda Melebihi Batas Waktu, Giliran di Ganti");
+			printf("Anda Melebihi Batas Waktu Lebih Dari %d Detik, Giliran di Ganti",batasWaktuInput);
+			printf("\nWaktu Anda Adalah %2.f Detik", waktuInput);			
 			Sleep(3000);
 			return errorPilih;
 		}
