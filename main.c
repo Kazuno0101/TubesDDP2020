@@ -747,24 +747,29 @@ bool switchGiliran(int giliran){
 void showJuara(){
 	char pilihan='N';
 
-	do{
-		system("cls");
-		printf("||==========   Juara   ==========||\n");
-		
-		if(bot.active == true && (pemain[1].score > pemain[0].score)){
-			printf("Juaranya adalah : Komputer\n");
-			printf("Score           : %d - %d\n",pemain[1].score,pemain[0].score);
-		}else if(pemain[1].score > pemain[0].score){
-			printf("Juaranya adalah : %s\n",pemain[1].nama);
-			printf("Score           : %d - %d\n",pemain[1].score,pemain[0].score);
-		}else{
-			printf("Juaranya adalah : %s\n",pemain[0].nama);
-			printf("Score           : %d - %d\n",pemain[0].score,pemain[1].score);
-		}
-		printf("||================================||\n\n\n");
-		printf("Masukan Y untuk kembali : ");
-		scanf("%c",&pilihan);
-	}while(tolower(pilihan)!= 'y');
+	system("cls");
+	printf("||==========   Juara   ==========||\n");
+	
+	if(bot.active == true && (pemain[1].score > pemain[0].score)){
+		printf("Juaranya adalah : Komputer\n");
+		printf("Score           : %d - %d\n",pemain[1].score,pemain[0].score);
+	}else if(pemain[1].score > pemain[0].score){
+		printf("Juaranya adalah : %s\n",pemain[1].nama);
+		printf("Score           : %d - %d\n",pemain[1].score,pemain[0].score);
+	}else{
+		printf("Juaranya adalah : %s\n",pemain[0].nama);
+		printf("Score           : %d - %d\n",pemain[0].score,pemain[1].score);
+	}
+	printf("||================================||\n\n\n");
+	printf("Masukan (Y) / (N) untuk kembali : ");
+	scanf("%c",&pilihan);
+	if(tolower(pilihan) == 'y'){
+		main();
+	}else if(tolower(pilihan) == 'n'){
+		exit(0);
+	}else{
+		showJuara();
+	}
 }
 
 int randomGrid(int sampai){
@@ -805,7 +810,7 @@ void help(){
   	FILE *how;
 	// membuka file
 	
-	if ((how = fopen("howtolpay.txt","r")) == NULL){
+	if ((how = fopen("help.txt","r")) == NULL){
     	printf("Error: File tidak ada!");
 	    exit(1);
 	}
@@ -813,7 +818,7 @@ void help(){
 	fgets(buff, 255, how);
 	do{
 		system("cls");
-		printf("%s", buff);
+		printf("%s\n", buff);
 		printf("Masukan Y untuk kembali : ");
 		scanf("%c",&pilihan);
 	}while(tolower(pilihan)!= 'y');
@@ -822,17 +827,24 @@ void help(){
 }
 
 void about(){
+	char buff[255];
 	char pilihan='N';
+
+  	FILE *how;
+	// membuka file
 	
+	if ((how = fopen("about.txt","r")) == NULL){
+    	printf("Error: File tidak ada!");
+	    exit(1);
+	}
+	
+	fgets(buff, 255, how);
 	do{
 		system("cls");
-		printf("||===========   About   ===========||\n");
-		printf("||                                 ||\n");
-		printf("||                                 ||\n");
-		printf("||                                 ||\n");
-		printf("||                                 ||\n");
-		printf("||=================================||\n\n\n");
+		printf("%s\n", buff);
 		printf("Masukan Y untuk kembali : ");
 		scanf("%c",&pilihan);
-	}while(tolower(pilihan) != 'y');
+	}while(tolower(pilihan)!= 'y');
+	
+	fclose(how);
 }
