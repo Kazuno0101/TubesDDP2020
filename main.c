@@ -262,6 +262,7 @@ void grid2(){
 	bool errorPilih=false;
 
 	resetGrid(2);
+	resetScore();
 	do{
 		do{
 			system("cls");
@@ -299,12 +300,14 @@ void grid2(){
 			printf("||===========||===========||===========||===========||===========||\n\n\n");
 			if(errorPilih==true) printf("Nomor tidak ada atau sudah diisi!\n");
 			errorPilih = fillGrid(giliran,2,pilihan);
+			
 		}while(errorPilih == true);
 		if(cekStatusGrid(2) == false)resetGrid(2); 
 		if(switchGiliran(giliran) == true) giliran++;
 			else giliran--;
 		if(cekLine(giliran,2) == true)ronde++;
 	}while(ronde < papan.ronde);
+	showJuara();
 }
 
 void grid3(){
@@ -595,15 +598,47 @@ bool cekLine(giliran,grid){
 		case 2:
 			for(i=0;i<5;i++){
 				for(j=0;j<5;j++){					
-					if((papan.ordoDone[i][0] == papan.ordoDone[i][1] && papan.ordoDone[i][1] == papan.ordoDone[i][2]) ||
-					(papan.ordoDone[0][j] == papan.ordoDone[1][j] && papan.ordoDone[1][j] == papan.ordoDone[2][j]) || 
-					(papan.ordoDone[0][0] == papan.ordoDone[1][1] && papan.ordoDone[1][1] == papan.ordoDone[2][2]) ||
-					(papan.ordoDone[0][2] == papan.ordoDone[1][1] && papan.ordoDone[1][1] == papan.ordoDone[2][0]) ){	
-						ronde = true;
-						if(pemain[giliran].index == 0) pemain[1].score++;
-							else pemain[0].score++;
-						resetGrid(1);
+
+					for(putaran=0;putaran<2;putaran++){
+						if(
+						//horizontal
+						(papan.ordoDone[i][0+putaran] == papan.ordoDone[i][1+putaran] && papan.ordoDone[i][1+putaran] == papan.ordoDone[i][2+putaran] &&
+				 		papan.ordoDone[i][2+putaran] == papan.ordoDone[i][3+putaran])||
+				 		
+				 		//vertikal
+						(papan.ordoDone[0+putaran][j] == papan.ordoDone[1+putaran][j] && papan.ordoDone[1+putaran][j] == papan.ordoDone[2+putaran][j] &&
+						papan.ordoDone[2+putaran][j] == papan.ordoDone[3+putaran][j])|| 
+						
+						//miring
+						(papan.ordoDone[0+putaran][0+putaran] == papan.ordoDone[1+putaran][1+putaran] && papan.ordoDone[1+putaran][1+putaran] == papan.ordoDone[2+putaran][2+putaran] &&
+						papan.ordoDone[2+putaran][2+putaran] == papan.ordoDone[3+putaran][3+putaran]) ||
+						
+						(papan.ordoDone[0+putaran][4-putaran] == papan.ordoDone[1+putaran][3-putaran] && papan.ordoDone[1+putaran][3-putaran] == papan.ordoDone[2+putaran][2-putaran] &&
+						papan.ordoDone[2+putaran][2-putaran] == papan.ordoDone[3+putaran][1-putaran])
+						){	ronde = true;
+							if(pemain[giliran].index == 0) pemain[1].score++;
+								else pemain[0].score++;
+							resetGrid(3);
+						}			
 					}
+					
+					
+					for(putaran=0;putaran<=2;putaran++){
+						if(
+						//miring 1 kali
+						(papan.ordoDone[0+putaran][1-putaran] == papan.ordoDone[1+putaran][2-putaran] && papan.ordoDone[1+putaran][2-putaran] == papan.ordoDone[2+putaran][3-putaran] &&
+						papan.ordoDone[2+putaran][3-putaran] == papan.ordoDone[3+putaran][4-putaran]) ||
+						
+						(papan.ordoDone[0+putaran][3+putaran] == papan.ordoDone[1+putaran][2+putaran] && papan.ordoDone[1+putaran][2+putaran] == papan.ordoDone[2+putaran][1+putaran] &&
+						papan.ordoDone[2+putaran][1+putaran] == papan.ordoDone[3+putaran][0+putaran])
+						){
+						ronde = true;
+							if(pemain[giliran].index == 0) pemain[1].score++;
+								else pemain[0].score++;
+							resetGrid(3);
+						}
+					}
+
 				}
 			}
 			break;
@@ -766,23 +801,23 @@ void help(){
 	char buff[255];
 	char pilihan='N';
 
-//  	FILE *how;
-//	// membuka file
-//	
-//	if ((how = fopen("howtolpay.txt","r")) == NULL){
-//    	printf("Error: File tidak ada!");
-//	    exit(1);
-//	}
-//	
-//	fgets(buff, 255, how);
-//	do{
-//		system("cls");
-//		printf("%s", buff);
-//		printf("Masukan Y untuk kembali : ");
-//		scanf("%c",&pilihan);
-//	}while(tolower(pilihan)!= 'y');
-//	
-//	fclose(how);
+  	FILE *how;
+	// membuka file
+	
+	if ((how = fopen("howtolpay.txt","r")) == NULL){
+    	printf("Error: File tidak ada!");
+	    exit(1);
+	}
+	
+	fgets(buff, 255, how);
+	do{
+		system("cls");
+		printf("%s", buff);
+		printf("Masukan Y untuk kembali : ");
+		scanf("%c",&pilihan);
+	}while(tolower(pilihan)!= 'y');
+	
+	fclose(how);
 }
 
 void about(){
