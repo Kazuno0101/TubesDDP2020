@@ -13,34 +13,31 @@ Nama /Author 	: Aqil Rahman & Nuno Alwi Azimah
 
 //modul
 void game();
-	void setGrid();
 	int setLevel();
-	void setNama();
+	void setGrid();
+	void setNama(int player);
 	void setRonde();
 	
 	void grid1();
 	void grid2();
 	void grid3();
-
-	void resetGrid();
-	bool fillGrid();
-	bool cekStatusGrid();
-	bool cekLine();
+	
+	bool fillGrid(int giliran,int grid,int pilihan);
+	void resetGrid(int grid);
+	int randomGrid(int sampai);
+	bool cekStatusGrid(int grid);
+	bool cekLine(int giliran,int grid);
 	
 	void viewScore();
 	void resetScore();
-	void viewGiliran();
-	bool switchGiliran();
-	
+	void viewGiliran(int giliran);
+	bool switchGiliran(int giliran);
 	void showJuara();
-	void timeOut();
-	int randomGrid();
-	int StartTime();
-	int EndTime();
 	
+	int StartTime();
+	int EndTime();	
 void help();
 void about();
-
 
 
 //struct 
@@ -71,8 +68,8 @@ Player pemain[2];
 Grid papan;
 Komputer bot;
 int pilihan;
-
 int i,j;
+
 
 //Program utama
 int main(){
@@ -116,7 +113,8 @@ int main(){
 	return 0;
 }
 
-
+//Modul game()
+//Modul utama untuk bermain
 void game(){
 	int s,vsBot = 1;
 	bool gameEnd = false;
@@ -149,6 +147,8 @@ void game(){
 	
 }
 
+//Modul setLevel()
+//Modul untuk menentukan level / mode yang akan dimainkan player
 int setLevel(){
 
 	bot.active = false;
@@ -171,6 +171,8 @@ int setLevel(){
 	return pilihan;
 }
 
+// Modul setGrid()
+// Modul untuk menentukan jenis papan yang akan digunakan saat bermain
 void setGrid(){
 	do{
 		system("cls");
@@ -184,6 +186,8 @@ void setGrid(){
 	}while(papan.pola > 3 || papan.pola < 0);
 }
 
+// Modul setNama(int player)
+// Modul untuk memasukan nama para player yang akan bermain
 void setNama(int player){
 	int i;
 	for(i=0;i<player;i++){
@@ -197,6 +201,8 @@ void setNama(int player){
 	pemain[1].index=1;
 }
 
+// Modul setRonde()
+// Modul untuk menentukan berapa kali pertandingan akan dilakukan
 void setRonde(){
 	bool salah=false;
 	
@@ -211,14 +217,8 @@ void setRonde(){
 	
 }
 
-int timeout ( int seconds ){
-	clock_t endwait;
-    endwait = clock () + seconds * CLOCKS_PER_SEC ;
-
-    while (clock() < endwait) {}
-    return  1;
-}
-
+// Modul grid1()
+// Modul untuk bermain game dengan papan 3x3
 void grid1(){
 	int giliran=0,ronde=0;
 	bool errorPilih=false;
@@ -257,6 +257,8 @@ void grid1(){
 	showJuara(giliran);
 }
 
+// Modul grid2()
+// Modul untuk bermain game dengan papan 5x5
 void grid2(){
 	int giliran=0,ronde=0;
 	bool errorPilih=false;
@@ -310,6 +312,8 @@ void grid2(){
 	showJuara();
 }
 
+// Modul grid3()
+// Modul untuk bermain game dengan papan 7x7
 void grid3(){
 	int giliran=0,ronde=0;
 	bool errorPilih=false;
@@ -372,7 +376,9 @@ void grid3(){
 	showJuara();
 }
 
-bool fillGrid(giliran,grid,pilihan){
+// Modul fillGrid(int giliran,int grid,int pilihan)
+// Modul untuk memasukan ordo dari papan permainan yang akan diisi oleh player
+bool fillGrid(int giliran,int grid,int pilihan){
 	int batasWaktuInput;
 	int pilih,noGrid=1,t;
 	bool errorPilih=false;
@@ -486,7 +492,9 @@ bool fillGrid(giliran,grid,pilihan){
 	return errorPilih;
 }
 
-void resetGrid(grid){
+// Modul resetGrid(int grid)
+// Modul untuk mereset semua data yang ada di papan permainan
+void resetGrid(int grid){
 	int i,j,noGrid=1;
 	
 	switch(grid){
@@ -527,7 +535,28 @@ void resetGrid(grid){
 
 }
 
-bool cekStatusGrid(grid){
+// Modul randomGrid(int sampai)
+// Modul untuk menghasilkan angka acak dari 1 sampai sekian
+int randomGrid(int sampai){
+	switch(sampai){
+		case 1:
+			return rand() % 9 + 1;
+			break;
+		
+		case 2:
+			return rand() % 25 + 1;			
+			break;
+			
+		case 3:
+			return rand() % 49 + 1;
+			break;
+			
+	}
+}
+
+// Modul cekStatusGrid(int grid)
+// Modul untuk mengecek apakah grid masih bisa diisi atau sudah terisi semua
+bool cekStatusGrid(int grid){
 	int noGrid=1, hasil=0;
 	
 	switch(grid){
@@ -575,7 +604,9 @@ bool cekStatusGrid(grid){
 	}
 }
 
-bool cekLine(giliran,grid){
+// Modul cekLine(int giliran,int grid)
+// Modul untuk mengecek apakah ada line yang berhasil terbentuk atau tidak
+bool cekLine(int giliran,int grid){
 	bool ronde=false;
 	int putaran,miringkanan;
 	
@@ -717,6 +748,8 @@ bool cekLine(giliran,grid){
 	return ronde;
 }
 
+// Modul viewScore()
+// Modul untuk menampilkan score sementara
 void viewScore(){
 	if(bot.active == false){
 		printf("Score %s : %d     Score %s : %d\n\n",pemain[0].nama,pemain[0].score,pemain[1].nama,pemain[1].score);
@@ -725,15 +758,21 @@ void viewScore(){
 	}
 }
 
+// Modul resetScore()
+// Modul untuk mereset score dari semua player / komputer
 void resetScore(){
 	pemain[0].score = 0;
 	pemain[1].score = 0;
 }
 
+// Modul viewGiliran(int giliran)
+// Modul untuk melihat giliran siapa yang harus mengisi papan permainan
 void viewGiliran(int giliran){
 	printf("Giliran : %s\n\n",pemain[giliran].nama);
 }
 
+// Modul switchGiliran(int giliran)
+// Modul untuk mengganti-ganti giliran para player
 bool switchGiliran(int giliran){
 	if(giliran == 0){
 		pemain[giliran].status = false;
@@ -744,6 +783,8 @@ bool switchGiliran(int giliran){
 	}
 }
 
+// Modul showJuara()
+// Modul untuk meihat siapa juara dari pertandingan tersebut
 void showJuara(){
 	char pilihan='N';
 
@@ -772,37 +813,28 @@ void showJuara(){
 	}
 }
 
-int randomGrid(int sampai){
-	switch(sampai){
-		case 1:
-			return rand() % 9 + 1;
-			break;
-		
-		case 2:
-			return rand() % 25 + 1;			
-			break;
-			
-		case 3:
-			return rand() % 49 + 1;
-			break;
-			
-	}
-}
-
-int StartTime() {
+// Modul StartTime()
+// Referensi dari kelompok Arsal & Naufal
+// Modul untuk mencatat waktu pertama dihitung
+int StartTime(){
     clock_t startInput;
     startInput = clock();
 
     return startInput;
 }
 
-int EndTime() {
+// Modul EndTime()
+// Referensi dari kelompok Arsal & Naufal
+// Modul untuk mencatat waktu terakhir dihitung
+int EndTime(){
     clock_t endInput;
     endInput = clock();
 
     return endInput;
 }
 
+// Modul help()
+// Modul untuk melihat help dari program
 void help(){
 	char buff[255];
 	char pilihan='N';
@@ -826,6 +858,8 @@ void help(){
 	fclose(how);
 }
 
+// Modul about()
+// Modul untuk melihat about dari program
 void about(){
 	char buff[255];
 	char pilihan='N';
