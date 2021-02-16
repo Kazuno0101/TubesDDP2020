@@ -786,8 +786,6 @@ bool switchGiliran(int giliran){
 // Modul showJuara()
 // Modul untuk meihat siapa juara dari pertandingan tersebut
 void showJuara(){
-	char pilihan='N';
-
 	system("cls");
 	printf("||==========   Juara   ==========||\n");
 	
