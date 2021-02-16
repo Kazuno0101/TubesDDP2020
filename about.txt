@@ -1,1 +1,8 @@
-coba
+Tentang
+Game Tic Tac Toe ini dikembangkan oleh Aqil dan Nuno 
+Mahasiswa Tingkat I Jurusan Teknik Komputer dan        
+Informatika Program Studi DIV-Teknik Informatika tahun 
+akademik 2020/2021. Game ini merupakan versi awal (1.0)
+guna untuk memenuhi kebutuhan Tugas Besar dibawah     
+Bimbingan Dosen Ibuk Ani Rahmani, S.Si., MT, Ibuk Asri Maspupah,S.ST., M.T, 
+dan Bapak Lukmannul Hakim, S.Kom., M.T.

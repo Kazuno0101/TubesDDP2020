@@ -192,7 +192,7 @@ void setNama(int player){
 	int i;
 	for(i=0;i<player;i++){
 		system("cls");
-		printf("||===========    Name    ===========||\n");
+		printf("||===========    Nama    ===========||\n");
 		if(player>1) printf("Masukan Nama Player %d:\n",i+1);
 			else printf("Masukan Nama :\n");
 		scanf("%s",&pemain[i].nama);
@@ -845,10 +845,13 @@ void help(){
 	    exit(1);
 	}
 	
-	fgets(buff, 255, how);
 	do{
 		system("cls");
-		printf("%s\n", buff);
+		while(fgets(buff, sizeof(buff), how)){
+	        printf("%s\n", buff);
+	    }
+//	    Sleep(10000);
+//	    pilihan = 'y';
 		printf("Masukan Y untuk kembali : ");
 		scanf("%c",&pilihan);
 	}while(tolower(pilihan)!= 'y');
@@ -870,12 +873,16 @@ void about(){
 	    exit(1);
 	}
 	
-	fgets(buff, 255, how);
 	do{
 		system("cls");
-		printf("%s\n", buff);
+		
+		while(fgets(buff, sizeof(buff), how)){
+	        printf("%s\n", buff);
+	    }
+//	    Sleep(10000);
+//	    pilihan = 'y';
 		printf("Masukan Y untuk kembali : ");
-		scanf("%c",&pilihan);
+		scanf("%c",&pilihan);	    
 	}while(tolower(pilihan)!= 'y');
 	
 	fclose(how);
