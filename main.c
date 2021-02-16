@@ -536,6 +536,7 @@ void resetGrid(int grid){
 }
 
 // Modul randomGrid(int sampai)
+// Referensi Googling
 // Modul untuk menghasilkan angka acak dari 1 sampai sekian
 int randomGrid(int sampai){
 	switch(sampai){
@@ -850,10 +851,8 @@ void help(){
 		while(fgets(buff, sizeof(buff), how)){
 	        printf("%s\n", buff);
 	    }
-//	    Sleep(10000);
-//	    pilihan = 'y';
-		printf("Masukan Y untuk kembali : ");
-		scanf("%c",&pilihan);
+	    Sleep(10000);
+	    pilihan = 'y';
 	}while(tolower(pilihan)!= 'y');
 	
 	fclose(how);
@@ -879,10 +878,8 @@ void about(){
 		while(fgets(buff, sizeof(buff), how)){
 	        printf("%s\n", buff);
 	    }
-//	    Sleep(10000);
-//	    pilihan = 'y';
-		printf("Masukan Y untuk kembali : ");
-		scanf("%c",&pilihan);	    
+	    Sleep(10000);
+	    pilihan = 'y';	    
 	}while(tolower(pilihan)!= 'y');
 	
 	fclose(how);
