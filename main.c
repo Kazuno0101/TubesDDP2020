@@ -7,20 +7,20 @@ Nama /Author 	: Aqil Rahman & Nuno Alwi Azimah
 #include<ctype.h>
 #include<stdbool.h>
 #include<stdlib.h>
-#include<time.h>
+#include<time.h> // library untuk timeout
 #include<string.h>
-#include<windows.h>
+#include<windows.h>  // library untuk timeout
 
 //modul
 void game();
-	int setLevel();
-	void setGrid();
-	void setNama(int player);
-	void setRonde();
+	int setLevel(); //pilihan level
+	void setGrid(); //pilihan grid
+	void setNama(int player); //nama player
+	void setRonde(); //banyaknya ronde yang dimainkan
 	
-	void grid1();
-	void grid2();
-	void grid3();
+	void grid1(); //grid 3x3
+	void grid2(); // grid 5x5
+	void grid3(); //grid 7x7
 	
 	bool fillGrid(int giliran,int grid,int pilihan);
 	void resetGrid(int grid);
@@ -34,10 +34,10 @@ void game();
 	bool switchGiliran(int giliran);
 	void showJuara();
 	
-	int StartTime();
-	int EndTime();	
-void help();
-void about();
+	int StartTime(); //waktu mulai input grid
+	int EndTime();	//waktu akhir input grid
+void help(); //panduan bermain game
+void about(); //tentang pengembang
 
 
 //struct 
@@ -67,7 +67,7 @@ typedef struct {
 Player pemain[2];
 Grid papan;
 Komputer bot;
-int pilihan;
+int pilihan; //pilihan untuk level
 int i,j;
 
 
@@ -384,6 +384,7 @@ bool fillGrid(int giliran,int grid,int pilihan){
 	bool errorPilih=false;
 	double waktuInput = 0;
 	
+	//initialisasi batasan waktu pada pilihan level
 	if(pilihan == 1){
 		batasWaktuInput = 10;
 	} else if(pilihan == 2){
@@ -399,14 +400,14 @@ bool fillGrid(int giliran,int grid,int pilihan){
 		pilih = randomGrid(grid);
 	}else{
 		
-		t = StartTime();
+		t = StartTime(); //waktu mulai
 		
 		printf("Masukan nomor grid yang akan diisi : ");
 		scanf("%d",&pilih);
 		
-		t = EndTime() - t;
+		t = EndTime() - t; //waktu akhir
 		
-		waktuInput = ((double) t)/CLOCKS_PER_SEC;
+		waktuInput = ((double) t)/CLOCKS_PER_SEC; //hitung waktu menjadi detik
 		
 		if(waktuInput>batasWaktuInput){
 			printf("Anda Melebihi Batas Waktu Lebih Dari %d Detik, Giliran di Ganti",batasWaktuInput);
@@ -861,7 +862,7 @@ void help(){
 		while(fgets(buff, sizeof(buff), how)){
 	        printf("%s\n", buff);
 	    }
-	    Sleep(10000);
+	    Sleep(10000); //waktu membaca 10 detik
 	    pilihan = 'y';
 	}while(tolower(pilihan)!= 'y');
 	
@@ -888,7 +889,7 @@ void about(){
 		while(fgets(buff, sizeof(buff), how)){
 	        printf("%s\n", buff);
 	    }
-	    Sleep(10000);
+	    Sleep(10000); //waktu membaca 10 detik
 	    pilihan = 'y';	    
 	}while(tolower(pilihan)!= 'y');
 	
