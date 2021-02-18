@@ -620,8 +620,18 @@ bool cekLine(int giliran,int grid){
 					(papan.ordoDone[0][0] == papan.ordoDone[1][1] && papan.ordoDone[1][1] == papan.ordoDone[2][2]) ||
 					(papan.ordoDone[0][2] == papan.ordoDone[1][1] && papan.ordoDone[1][1] == papan.ordoDone[2][0]) ){	
 						ronde = true;
-						if(pemain[giliran].index == 0) pemain[1].score++;
-							else pemain[0].score++;
+						if(pemain[giliran].index == 0 && bot.active == true) {
+							pemain[1].score++;
+							printf("Pemenang ronde ini adalah : Komputer");
+						}else if(pemain[giliran].index == 0){
+							pemain[1].score++;
+							printf("Pemenang ronde ini adalah : %s",pemain[1].nama);
+						}else{	
+							printf("Pemenang ronde ini adalah : %s",pemain[0].nama);
+							pemain[0].score++;
+						}
+							
+						Sleep(3000);
 						resetGrid(1);
 					}
 				}
