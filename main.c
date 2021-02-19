@@ -3,50 +3,50 @@ Nama /Author 	: Aqil Rahman & Nuno Alwi Azimah
 */
 
 //header
-#include<stdio.h>
-#include<ctype.h>
-#include<stdbool.h>
-#include<stdlib.h>
-#include<time.h> // library untuk timeout
-#include<string.h>
-#include<windows.h>  // library untuk timeout
+#include<stdio.h>	// library input output
+#include<ctype.h>	// library untuk memanipulasi variabel
+#include<stdbool.h>	// library standar untuk boolean
+#include<stdlib.h>	// library untuk memanggil fungsi-fungsi bawaan dari c
+#include<time.h> 	// library untuk timeout
+#include<string.h>	// library untuk memanipulasi string
+#include<windows.h>	// library untuk timeout
 
 //modul
 void game();
-	int setLevel(); //pilihan level
-	void setGrid(); //pilihan grid
-	void setNama(int player); //nama player
-	void setRonde(); //banyaknya ronde yang dimainkan
+	int setLevel(); 								//pilihan level
+	void setGrid(); 								//pilihan grid
+	void setNama(int player); 						//nama player
+	void setRonde(); 								//banyaknya ronde yang dimainkan
 	
-	void grid1(); //grid 3x3
-	void grid2(); // grid 5x5
-	void grid3(); //grid 7x7
+	void grid1(); 									//grid 3x3
+	void grid2(); 									//grid 5x5
+	void grid3(); 									//grid 7x7
 	
-	bool fillGrid(int giliran,int grid,int pilihan);
-	void resetGrid(int grid);
-	int randomGrid(int sampai);
-	bool cekStatusGrid(int grid);
-	bool cekLine(int giliran,int grid);
+	bool fillGrid(int giliran,int grid,int pilihan);//mengisi grid	
+	void resetGrid(int grid);						//mereset atribut grid
+	int randomGrid(int sampai);						//memberikan angka pada dari range yang sudah ditentukan
+	bool cekStatusGrid(int grid);					//mengecek apakah grid masih bisa diisi atau tidak
+	bool cekLine(int giliran,int grid);				//mengecek apakah di grid sudah terbentuk line atau belum
+		
+	void viewScore();								//menampilkan score sementara
+	void resetScore();								//mereset atribut pada score
+	void viewGiliran(int giliran);					//menampilkan giliran yang sedang bermain
+	bool switchGiliran(int giliran);				//mengubah giliran
+	void showJuara();								//menampilkan siapa yang menjadi juara di akhir permainan
 	
-	void viewScore();
-	void resetScore();
-	void viewGiliran(int giliran);
-	bool switchGiliran(int giliran);
-	void showJuara();
-	
-	int StartTime(); //waktu mulai input grid
-	int EndTime();	//waktu akhir input grid
-void help(); //panduan bermain game
-void about(); //tentang pengembang
+	int StartTime(); 								//waktu mulai input grid
+	int EndTime();									//waktu akhir input grid
+void help(); 										//panduan bermain game
+void about(); 										//tentang pengembang
 
 
 //struct 
 typedef struct {
-	int index;
+	int index;			
 	char nama[100];
 	int score;
 	bool status;
-} Player;
+} Player;	//struct data pemain
 
 typedef struct {
 	int pola;
@@ -56,19 +56,19 @@ typedef struct {
 	bool status;
 	int waktu;
 	int ronde;
-} Grid;
+} Grid;		//struct data grid
 
 typedef struct {
 	bool active;
-} Komputer;
+} Komputer;	//struct data komputer
 
 
 //Variabel Global
-Player pemain[2];
-Grid papan;
-Komputer bot;
-int pilihan; //pilihan untuk level
-int i,j;
+Player pemain[2];	//membuat object dari player
+Grid papan;			//membuat object dari grid
+Komputer bot;		//membuat object dari komputer
+int pilihan; 		//pilihan untuk level
+int i,j;			//untuk pengulangan agar tidak membuat banyak variabel lokal
 
 
 //Program utama
@@ -396,8 +396,8 @@ bool fillGrid(int giliran,int grid,int pilihan){
 	}
 	
 	
-	if(bot.active == true && pemain[giliran].index == 1){
-		pilih = randomGrid(grid);
+	if(bot.active == true && pemain[giliran].index == 1){	//kondisi jika komputer aktif dan index sama dengan 1
+		pilih = randomGrid(grid);							//maka jalankan modul random grid dengan mengirimkan parameter jenis grid
 	}else{
 		
 		t = StartTime(); //waktu mulai
@@ -426,16 +426,16 @@ bool fillGrid(int giliran,int grid,int pilihan){
 			}
 			for(i=0;i<3;i++){
 				for(j=0;j<3;j++){			
-					if(pilih == papan.ordoStatus[i][j]){
-						errorPilih = true;
-					}else if(pilih == papan.ordoDone[i][j] && pemain[giliran].index == 0){
-						papan.ordo[i][j] = 'X';
-						papan.ordoDone[i][j] = 0;
-						papan.ordoStatus[i][j] = pilih;
-					}else if(pilih == papan.ordoDone[i][j] && pemain[giliran].index == 1){
-						papan.ordo[i][j] = 'O';
-						papan.ordoDone[i][j] = 100;
-						papan.ordoStatus[i][j] = pilih;
+					if(pilih == papan.ordoStatus[i][j]){										//jika papan sudah terisi
+						errorPilih = true;														// return true
+					}else if(pilih == papan.ordoDone[i][j] && pemain[giliran].index == 0){		// jika papan masih kosong dan index sama dengan 0
+						papan.ordo[i][j] = 'X';													// isi ordo dengan x
+						papan.ordoDone[i][j] = 0;												// isi ordodone dengan 0 yang menandakan sudah terisi
+						papan.ordoStatus[i][j] = pilih;											// isi orodostatus dengan inputan
+					}else if(pilih == papan.ordoDone[i][j] && pemain[giliran].index == 1){		// jika papan masih kosong dan index sama dengan 1
+						papan.ordo[i][j] = 'O';													// isi ordo dengan o
+						papan.ordoDone[i][j] = 100;												// isi ordodone dengan 0 yang menandakan sudah terisi
+						papan.ordoStatus[i][j] = pilih;											// isi orodostatus dengan inputan
 					}
 				}
 			}
